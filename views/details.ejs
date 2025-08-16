@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2980b9;
+            --background-color: #f8f9fa;
+            --text-color: #333;
+            --card-bg: white;
+            --card-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            --border-color: #ddd;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--primary-color);
+        }
+
+        .detail-card {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .detail-card h2 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .detail-card p {
+            margin-bottom: 10px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 15px;
+            }
+            
+            .detail-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <%- include('partials/navigation') %>
+    
+    <div class="container">
+        <h1>Détails de la demande</h1>
+        
+        <div class="detail-card">
+            <h2>Information sur le porteur et le cas</h2>
+            <p><strong>Date :</strong> <%= demande && demande.datedemcredcas ? new Date(demande.datedemcredcas).toLocaleDateString('fr-FR') : '' %></p>
+            <p><strong>Matricule :</strong> <%= demande ? demande.matriculeportcas : '' %></p>
+            <p><strong>Prénom(s) :</strong> <%= demande ? demande.prenomportcas : '' %></p>
+            <p><strong>Type :</strong> <%= demande ? demande.typecas : '' %></p>
+            <p><strong>Source CAS :</strong> <%= demande ? demande.sourcecas : '' %></p>
+            <p><strong>Porteur CAS :</strong> <%= demande ? demande.porteurcas : '' %></p>
+            
+            <h2>Informations Client</h2>
+            <p><strong>Nom :</strong> <%= demande ? demande.nomcli : '' %></p>
+            <p><strong>Prénom :</strong> <%= demande ? demande.prenomcli : '' %></p>
+            <p><strong>CIN :</strong> <%= demande ? demande.cincli : '' %></p>
+            <p><strong>Date de naissance :</strong> <%= demande && demande.datenaisscli ? new Date(demande.datenaisscli).toLocaleDateString('fr-FR') : '' %></p>
+            <p><strong>Sexe :</strong> <%= demande ? demande.sexecli : '' %></p>
+            <p><strong>Situation matrimoniale :</strong> <%= demande ? demande.matrimonialecli : '' %></p>
+            <p><strong>Adresse :</strong> <%= demande ? demande.adressecli : '' %></p>
+            <p><strong>Contact :</strong> <%= demande ? demande.contactcli : '' %></p>
+            <p><strong>Activité :</strong> <%= demande ? demande.activitecli : '' %></p>
+            <p><strong>Maturité activité (années) :</strong> <%= demande ? demande.maturiteactivitecli : '' %></p>
+            
+            <h2>Informations Crédit</h2>
+            <p><strong>Montant (Ar) :</strong> <%= demande ? new Intl.NumberFormat('fr-FR').format(demande.montantdemcredcli) : '' %></p>
+            <p><strong>Durée (mois) :</strong> <%= demande ? demande.moiscli : '' %></p>
+            <p><strong>Capacité (Ar) :</strong> <%= demande ? new Intl.NumberFormat('fr-FR').format(demande.capacitecli) : '' %></p>
+            
+            <h2>Informations Caution</h2>
+            <p><strong>Nom :</strong> <%= demande ? demande.nomcaution : '' %></p>
+            <p><strong>Prénom :</strong> <%= demande ? demande.prenomcaution : '' %></p>
+            <p><strong>CIN :</strong> <%= demande ? demande.cincaution : '' %></p>
+            <p><strong>Contact :</strong> <%= demande ? demande.contactcaution : '' %></p>
+            
+            <h2>Décision</h2>
+            <p><strong>Décision :</strong> <%= demande ? demande.decisiondemcredcas : '' %></p>
+            <p><strong>Statut :</strong> <%= demande ? demande.statut : '' %></p>
+            <p><strong>Date de création :</strong> <%= demande && demande.date_creation ? new Date(demande.date_creation).toLocaleDateString('fr-FR') : '' %></p>
+            <p><strong>Date de modification :</strong> <%= demande && demande.date_modification ? new Date(demande.date_modification).toLocaleDateString('fr-FR') : '' %></p>
+            
+            <a href="/modifier/<%= demande ? demande.id : '' %>" class="btn btn-primary">Modifier</a>
+        </div>
+    </div>
+</body>
+</html>

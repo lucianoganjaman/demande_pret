@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2980b9;
+            --background-color: #f8f9fa;
+            --text-color: #333;
+            --card-bg: white;
+            --card-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            --border-color: #ddd; /* Ajouté pour cohérence */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--primary-color);
+        }
+
+        .about-card {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .about-card p {
+            margin-bottom: 20px;
+        }
+
+        .team-members {
+            margin-top: 30px;
+        }
+
+        .team-members h2 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .member {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .member img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 15px;
+        }
+
+        .member-info h3 {
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+
+        .member-info p {
+            color: #666;
+            margin-bottom: 0;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 15px;
+            }
+            
+            .about-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <%- include('partials/navigation') %>
+    
+    <div class="container">
+        <h1>À propos de l'application</h1>
+        
+        <div class="about-card">
+            <p>Cette application est un système de gestion des demandes de crédit développé pour faciliter le suivi et la gestion des demandes de prêt.</p>
+            
+            <p>Fonctionnalités principales :</p>
+            <ul style="margin-left: 20px; margin-bottom: 20px;">
+                <li>Création de nouvelles demandes de crédit</li>
+                <li>Consultation de la liste des demandes</li>
+                <li>Modification des demandes existantes</li>
+                <li>Suppression des demandes</li>
+                <li>Suivi des décisions</li>
+            </ul>
+            
+            <p>Version: 1.0.0</p>
+            <p>Dernière mise à jour: <%= new Date().toLocaleDateString() %></p>
+            
+            <div class="team-members">
+                <h2>Équipe de développement</h2>
+                
+                <div class="member">
+                    <div class="member-info">
+                        <h3>RAKOTOMAMONJY Jean Luciano</h3>
+                        <p>Développeur Full Stack débutant étudiant à l'ESSGAM</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

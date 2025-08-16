@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2980b9;
+            --background-color: #f8f9fa;
+            --text-color: #333;
+            --border-color: #ddd;
+            --error-color: #e74c3c;
+            --success-color: #2ecc71;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--primary-color);
+        }
+
+        .edit-form {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        fieldset {
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        legend {
+            padding: 0 10px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        input[type="number"],
+        input[type="email"],
+        input[type="tel"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        input[type="checkbox"],
+        input[type="radio"] {
+            margin-right: 5px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .btn-danger {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+
+        @media (max-width: 768px) {
+            .edit-form {
+                padding: 15px;
+            }
+            
+            fieldset {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <%- include('partials/navigation') %>
+    
+    <div class="container">
+        <h1>MODIFIER DEMANDE DE CRÉDIT</h1>
+        
+        <form action="/modifier/<%= demande ? demande.id : '' %>" method="post" class="edit-form">
+            <!-- Section 1: Porteur et cas -->
+            <fieldset>
+                <legend>Information sur le porteur et le cas</legend>
+                
+                <div class="form-group">
+                    <label for="datedemcred">DATE</label>
+                    <input type="date" name="datedemcred" value="<%= demande && demande.datedemcredcas ? new Date(demande.datedemcredcas).toISOString().split('T')[0] : '' %>" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="matriculeportcas">Matricule</label>
+                    <input type="text" name="matriculeportcas" value="<%= demande ? demande.matriculeportcas : '' %>" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="prenomportcas">Prénom(s)</label>
+                    <input type="text" name="prenomportcas" value="<%= demande ? demande.prenomportcas : '' %>" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="typecas">Type</label>
+                    <select name="typecas" required>
+                        <option value="Nouveau cas" <%= demande && demande.typecas === 'Nouveau cas' ? 'selected' : '' %>>Nouveau cas</option>
+                        <option value="Récurent" <%= demande && demande.typecas === 'Récurent' ? 'selected' : '' %>>Récurent</option>
+                        <option value="Scoring" <%= demande && demande.typecas === 'Scoring' ? 'selected' : '' %>>Scoring</option>
+                        <option value="BCB" <%= demande && demande.typecas === 'BCB' ? 'selected' : '' %>>BCB</option>
+                        <option value="Autres" <%= demande && demande.typecas === 'Autres' ? 'selected' : '' %>>Autres</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="sourcecas">Source CAS</label>
+                    <select name="sourcecas" required>
+                        <option value="PORTE A PORTE" <%= demande && demande.sourcecas === 'PORTE A PORTE' ? 'selected' : '' %>>PORTE A PORTE</option>
+                        <option value="PARTENARIAT" <%= demande && demande.sourcecas === 'PARTENARIAT' ? 'selected' : '' %>>PARTENARIAT</option>
+                        <option value="Autres" <%= demande && demande.sourcecas === 'Autres' ? 'selected' : '' %>>Autres</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="porteurcas">Porteur CAS</label>
+                    <select name="porteurcas" required>
+                        <option value="BTW" <%= demande && demande.porteurcas === 'BTW' ? 'selected' : '' %>>BTW</option>
+                        <option value="PFM" <%= demande && demande.porteurcas === 'PFM' ? 'selected' : '' %>>PFM</option>
+                        <option value="Autres" <%= demande && demande.porteurcas === 'Autres' ? 'selected' : '' %>>Autres</option>
+                    </select>
+                </div>
+            </fieldset>
+            
+            <!-- Section 2: Informations Client -->
+            <fieldset>
+                <legend>Informations Client</legend>
+                
+                <div class="form-group">
+                    <label for="nomcli">NOM CLIENT</label>
+                    <input type="text" name="nomcli" value="<%= demande ? demande.nomcli : '' %>" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="prenomcli">PRÉNOM</label>
+                    <input type="text" name="prenomcli" value="<%= demande ? demande.prenomcli : '' %>" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="cincli">CIN</label>
+                    <input type="text" name="cincli" value="<%= demande ? demande.cincli : '' %>">
+                </div>
+                
+                <div class="form-group">
+                    <label for="datenaisscli">DATE DE NAISSANCE</label>
+                    <input type="date" name="datenaisscli" value="<%= demande && demande.datenaisscli ? new Date(demande.datenaisscli).toISOString().split('T')[0] : '' %>">
+                </div>
+                
+                <div class="form-group">
+                    <label>SEXE</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="radio" name="sexecli" value="Homme" id="Homme" <%= demande && demande.sexecli === 'Homme' ? 'checked' : '' %>>
+                            <label for="Homme">Homme</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="radio" name="sexecli" value="Femme" id="Femme" <%= demande && demande.sexecli === 'Femme' ? 'checked' : '' %>>
+                            <label for="Femme">Femme</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>SITUATION MATRIMONIALE</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="radio" name="matrimonialecli" value="Célibataire" id="cel" <%= demande && demande.matrimonialecli === 'Célibataire' ? 'checked' : '' %>>
+                            <label for="cel">Célibataire</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="radio" name="matrimonialecli" value="Marié(e)" id="marie" <%= demande && demande.matrimonialecli === 'Marié(e)' ? 'checked' : '' %>>
+                            <label for="marie">Marié(e)</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="radio" name="matrimonialecli" value="Concubinage" id="concubinage" <%= demande && demande.matrimonialecli === 'Concubinage' ? 'checked' : '' %>>
+                            <label for="concubinage">Concubinage</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="radio" name="matrimonialecli" value="Divorcé(e)" id="divorce" <%= demande && demande.matrimonialecli === 'Divorcé(e)' ? 'checked' : '' %>>
+                            <label for="divorce">Divorcé(e)</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="radio" name="matrimonialecli" value="Veuf(ve)" id="veu" <%= demande && demande.matrimonialecli === 'Veuf(ve)' ? 'checked' : '' %>>
+                            <label for="veu">Veuf(ve)</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="adressecli">ADRESSE</label>
+                    <input type="text" name="adressecli" value="<%= demande ? demande.adressecli : '' %>" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="contactcli">CONTACT</label>
+                    <input type="text" name="contactcli" value="<%= demande ? demande.contactcli : '' %>" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="activitecli">ACTIVITÉ</label>
+                    <input type="text" name="activitecli" value="<%= demande ? demande.activitecli : '' %>" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="maturiteactivitecli">MATURITÉ ACTIVITÉ (en années)</label>
+                    <input type="text" name="maturiteactivitecli" value="<%= demande ? demande.maturiteactivitecli : '' %>" placeholder="5" required>
+                </div>
+            </fieldset>
+            
+            <!-- Section 3: Informations Crédit -->
+            <fieldset>
+                <legend>Informations Crédit</legend>
+                
+                <div class="form-group">
+                    <label for="montantdemcredcli">MONTANT (Ar)</label>
+                    <input type="number" name="montantdemcredcli" value="<%= demande ? demande.montantdemcredcli : '' %>" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="moiscli">MOIS</label>
+                    <input type="text" name="moiscli" value="<%= demande ? demande.moiscli : '' %>" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="capacitecli">CAPACITÉ (Ar)</label>
+                    <input type="number" name="capacitecli" value="<%= demande ? demande.capacitecli : '' %>" required>
+                </div>
+            </fieldset>
+            
+            <!-- Section 4: Informations Caution -->
+            <fieldset>
+                <legend>Informations Caution</legend>
+                
+                <div class="form-group">
+                    <label for="nomcaution">NOM</label>
+                    <input type="text" name="nomcaution" value="<%= demande ? demande.nomcaution : '' %>" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="prenomcaution">PRÉNOM</label>
+                    <input type="text" name="prenomcaution" value="<%= demande ? demande.prenomcaution : '' %>" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="cincaution">CIN</label>
+                    <input type="text" name="cincaution" value="<%= demande ? demande.cincaution : '' %>" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="contactcaution">CONTACT</label>
+                    <input type="text" name="contactcaution" value="<%= demande ? demande.contactcaution : '' %>" required>
+                </div>
+            </fieldset>
+            
+            <!-- Section 5: Décision -->
+            <fieldset>
+                <legend>Décision</legend>
+                
+                <div class="form-group">
+                    <label>DÉCISION</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="radio" name="decisiondemcredcas" value="Approuvé" id="approuve" <%= demande && demande.decisiondemcredcas === 'Approuvé' ? 'checked' : '' %>>
+                            <label for="approuve">Approuvé</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="radio" name="decisiondemcredcas" value="Rejet" id="rejet" <%= demande && demande.decisiondemcredcas === 'Rejet' ? 'checked' : '' %>>
+                            <label for="rejet">Rejet</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="radio" name="decisiondemcredcas" value="Autres" id="autre" <%= demande && demande.decisiondemcredcas === 'Autres' ? 'checked' : '' %>>
+                            <label for="autre">Autres</label>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Enregistrer</button>
+                <a href="/liste" class="btn btn-danger">Annuler</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

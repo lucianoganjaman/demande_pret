@@ -1,0 +1,85 @@
+<nav class="navbar">
+    <div class="container">
+        <h1>Système de Gestion de Crédits</h1>
+        <ul class="nav-links">
+            <li><a href="/" class="<%= title === 'Nouvelle demande' ? 'active' : '' %>">Nouvelle demande</a></li>
+            <li><a href="/liste" class="<%= title === 'Liste des demandes' ? 'active' : '' %>">Liste des demandes</a></li>
+            <li><a href="/apropos" class="<%= title === 'À propos' ? 'active' : '' %>">À propos</a></li>
+        </ul>
+    </div>
+</nav>
+
+<style>
+    :root {
+        --navbar-bg: #2c3e50;
+        --navbar-text: white;
+        --navbar-hover: #3498db;
+        --navbar-active: #2980b9;
+    }
+
+    .navbar {
+        background: var(--navbar-bg);
+        color: var(--navbar-text);
+        padding: 1rem 0;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+
+    .navbar h1 {
+        font-size: 1.5rem;
+        margin: 0;
+    }
+
+    .nav-links {
+        display: flex;
+        list-style: none;
+    }
+
+    .nav-links li {
+        margin-left: 1.5rem;
+    }
+
+    .nav-links a {
+        color: var(--navbar-text);
+        text-decoration: none;
+        font-weight: 500;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        transition: background-color 0.3s ease;
+    }
+
+    .nav-links a:hover {
+        background-color: var(--navbar-hover);
+    }
+
+    .nav-links a.active {
+        background-color: var(--navbar-active);
+    }
+
+    @media (max-width: 768px) {
+        .navbar .container {
+            flex-direction: column;
+        }
+
+        .navbar h1 {
+            margin-bottom: 1rem;
+        }
+
+        .nav-links {
+            width: 100%;
+            justify-content: space-around;
+        }
+
+        .nav-links li {
+            margin: 0;
+        }
+    }
+</style>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2980b9;
+            --background-color: #f8f9fa;
+            --text-color: #333;
+            --border-color: #ddd;
+            --table-header-bg: #f1f1f1;
+            --table-row-even: #f9f9f9;
+            --table-row-hover: #f1f1f1;
+            --link-color: #3498db;
+            --link-hover-color: #2980b9;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            overflow-x: auto;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--primary-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            background: white;
+        }
+
+        th, td {
+            border: 1px solid var(--border-color);
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--table-header-bg);
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+        }
+
+        tr:nth-child(even) {
+            background-color: var(--table-row-even);
+        }
+
+        tr:hover {
+            background-color: var(--table-row-hover);
+        }
+
+        .action-links {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-links a {
+            color: var(--link-color);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .action-links a:hover {
+            color: var(--link-hover-color);
+            text-decoration: underline;
+        }
+
+        .action-links a:first-child {
+            background-color: #f0f0f0;
+        }
+
+        .action-links a:last-child {
+            background-color: #ffebee;
+            color: #e53935;
+        }
+
+        .action-links a:last-child:hover {
+            background-color: #ffcdd2;
+        }
+
+        @media (max-width: 768px) {
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+            
+            th, td {
+                padding: 8px 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <%- include('partials/navigation') %>
+    
+    <div class="container">
+        <h1>Liste des demandes de crédit</h1>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Date</th>
+                    <th>Matricule</th>
+                    <th>Prénom(s)</th>
+                    <th>Type</th>
+                    <th>Nom client</th>
+                    <th>Prénom client</th>
+                    <th>Montant (Ar)</th>
+                    <th>Décision</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% demandes.forEach(demande => { %>
+                <tr>
+                    <td><%= demande.id %></td>
+                    <td><%= new Date(demande.datedemcredcas).toLocaleDateString('fr-FR') %></td>
+                    <td><%= demande.matriculeportcas %></td>
+                    <td><%= demande.prenomportcas %></td>
+                    <td><%= demande.typecas %></td>
+                    <td><%= demande.nomcli %></td>
+                    <td><%= demande.prenomcli %></td>
+                    <td><%= new Intl.NumberFormat('fr-FR').format(demande.montantdemcredcli) %></td>
+                    <td><%= demande.decisiondemcredcas %></td>
+                    <td class="action-links">
+                        <a href="/modifier/<%= demande.id %>">Modifier</a>
+                        <a href="/supprimer/<%= demande.id %>" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette demande ?')">Supprimer</a>
+                    </td>
+                </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
