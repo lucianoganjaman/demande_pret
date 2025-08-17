@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title><%= title %></title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f8d7da;
+            color: #721c24;
+            padding: 40px;
+            text-align: center;
+        }
+        .error-box {
+            background: #f5c6cb;
+            padding: 30px;
+            border-radius: 8px;
+            display: inline-block;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        h1 {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="error-box">
+        <h1><%= title || 'Erreur' %></h1>
+        <p><%= message || 'Une erreur est survenue' %></p>
+        <a href="/" style="color:#0056b3;text-decoration:underline;">Retour à l'accueil</a>
+    </div>
+</body>
+</html>

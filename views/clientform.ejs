@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= title %></title>
+    <title>Nouvelle Demande de Crédit</title>
     <style>
         :root {
             --primary-color: #3498db;
@@ -34,7 +34,7 @@
             padding: 20px;
         }
 
-        .form-title {
+        h1 {
             text-align: center;
             margin-bottom: 30px;
             color: var(--primary-color);
@@ -84,7 +84,8 @@
             font-size: 16px;
         }
 
-        input[type="checkbox"] {
+        input[type="checkbox"],
+        input[type="radio"] {
             margin-right: 5px;
         }
 
@@ -126,13 +127,13 @@
             background-color: var(--secondary-color);
         }
 
-        .btn-danger {
-            background-color: #e74c3c;
+        .btn-secondary {
+            background-color: #6c757d;
             color: white;
         }
 
-        .btn-danger:hover {
-            background-color: #c0392b;
+        .btn-secondary:hover {
+            background-color: #5a6268;
         }
 
         @media (max-width: 768px) {
@@ -150,31 +151,31 @@
     <%- include('partials/navigation') %>
     
     <div class="container">
-        <h1 class="form-title">DEMANDE DE CRÉDIT</h1>
+        <h1>NOUVELLE DEMANDE DE CRÉDIT</h1>
         
-        <form action="/" method="post" class="credit-form">
+        <form action="/ajouter-demande" method="post" class="credit-form">
             <!-- Section 1: Porteur et cas -->
             <fieldset>
                 <legend>Information sur le porteur et le cas</legend>
                 
                 <div class="form-group">
-                    <label for="datedemcred">DATE</label>
-                    <input type="date" name="datedemcred" id="datedemcred" required>
+                    <label for="datedemcredcas">DATE</label>
+                    <input type="date" name="datedemcredcas" required>
                 </div>
                 
                 <div class="form-group">
                     <label for="matriculeportcas">Matricule</label>
-                    <input type="text" name="matriculeportcas" id="matriculeportcas" required>
+                    <input type="text" name="matriculeportcas" required>
                 </div>
                 
                 <div class="form-group">
                     <label for="prenomportcas">Prénom(s)</label>
-                    <input type="text" name="prenomportcas" id="prenomportcas" required>
+                    <input type="text" name="prenomportcas" required>
                 </div>
                 
                 <div class="form-group">
                     <label for="typecas">Type</label>
-                    <select name="typecas" id="typecas" required>
+                    <select name="typecas" required>
                         <option value="Nouveau cas">Nouveau cas</option>
                         <option value="Récurent">Récurent</option>
                         <option value="Scoring">Scoring</option>
@@ -185,7 +186,7 @@
                 
                 <div class="form-group">
                     <label for="sourcecas">Source CAS</label>
-                    <select name="sourcecas" id="sourcecas" required>
+                    <select name="sourcecas" required>
                         <option value="PORTE A PORTE">PORTE A PORTE</option>
                         <option value="PARTENARIAT">PARTENARIAT</option>
                         <option value="Autres">Autres</option>
@@ -194,7 +195,7 @@
                 
                 <div class="form-group">
                     <label for="porteurcas">Porteur CAS</label>
-                    <select name="porteurcas" id="porteurcas" required>
+                    <select name="porteurcas" required>
                         <option value="BTW">BTW</option>
                         <option value="PFM">PFM</option>
                         <option value="Autres">Autres</option>
@@ -208,29 +209,29 @@
                 
                 <div class="form-group">
                     <label for="nomcli">NOM CLIENT</label>
-                    <input type="text" name="nomcli" id="nomcli" required>
+                    <input type="text" name="nomcli" required>
                 </div>
                 
                 <div class="form-group">
                     <label for="prenomcli">PRÉNOM</label>
-                    <input type="text" name="prenomcli" id="prenomcli" required>
+                    <input type="text" name="prenomcli" required>
                 </div>
                 
                 <div class="form-group">
                     <label for="cincli">CIN</label>
-                    <input type="text" name="cincli" id="cincli">
+                    <input type="text" name="cincli">
                 </div>
                 
                 <div class="form-group">
                     <label for="datenaisscli">DATE DE NAISSANCE</label>
-                    <input type="date" name="datenaisscli" id="datenaisscli">
+                    <input type="date" name="datenaisscli">
                 </div>
                 
                 <div class="form-group">
                     <label>SEXE</label>
                     <div class="checkbox-group">
                         <div class="checkbox-item">
-                            <input type="radio" name="sexecli" value="Homme" id="Homme">
+                            <input type="radio" name="sexecli" value="Homme" id="Homme" checked>
                             <label for="Homme">Homme</label>
                         </div>
                         <div class="checkbox-item">
@@ -244,7 +245,7 @@
                     <label>SITUATION MATRIMONIALE</label>
                     <div class="checkbox-group">
                         <div class="checkbox-item">
-                            <input type="radio" name="matrimonialecli" value="Célibataire" id="cel">
+                            <input type="radio" name="matrimonialecli" value="Célibataire" id="cel" checked>
                             <label for="cel">Célibataire</label>
                         </div>
                         <div class="checkbox-item">
@@ -268,22 +269,22 @@
                 
                 <div class="form-group">
                     <label for="adressecli">ADRESSE</label>
-                    <input type="text" name="adressecli" id="adressecli" required>
+                    <input type="text" name="adressecli" required>
                 </div>
                 
                 <div class="form-group">
                     <label for="contactcli">CONTACT</label>
-                    <input type="text" name="contactcli" id="contactcli" required>
+                    <input type="text" name="contactcli" required>
                 </div>
                 
                 <div class="form-group">
                     <label for="activitecli">ACTIVITÉ</label>
-                    <input type="text" name="activitecli" id="activitecli" required>
+                    <input type="text" name="activitecli" required>
                 </div>
                 
                 <div class="form-group">
                     <label for="maturiteactivitecli">MATURITÉ ACTIVITÉ (en années)</label>
-                    <input type="text" name="maturiteactivitecli" id="maturiteactivitecli" placeholder="5" required>
+                    <input type="text" name="maturiteactivitecli" placeholder="5" required>
                 </div>
             </fieldset>
             
@@ -293,17 +294,17 @@
                 
                 <div class="form-group">
                     <label for="montantdemcredcli">MONTANT (Ar)</label>
-                    <input type="number" name="montantdemcredcli" id="montantdemcredcli" required>
+                    <input type="number" name="montantdemcredcli" required>
                 </div>
                 
                 <div class="form-group">
                     <label for="moiscli">MOIS</label>
-                    <input type="text" name="moiscli" id="moiscli" required>
+                    <input type="text" name="moiscli" required>
                 </div>
                 
                 <div class="form-group">
                     <label for="capacitecli">CAPACITÉ (Ar)</label>
-                    <input type="number" name="capacitecli" id="capacitecli" required>
+                    <input type="number" name="capacitecli" required>
                 </div>
             </fieldset>
             
@@ -313,32 +314,36 @@
                 
                 <div class="form-group">
                     <label for="nomcaution">NOM</label>
-                    <input type="text" name="nomcaution" id="nomcaution" required>
+                    <input type="text" name="nomcaution" required>
                 </div>
                 
                 <div class="form-group">
                     <label for="prenomcaution">PRÉNOM</label>
-                    <input type="text" name="prenomcaution" id="prenomcaution" required>
+                    <input type="text" name="prenomcaution" required>
                 </div>
                 
                 <div class="form-group">
                     <label for="cincaution">CIN</label>
-                    <input type="text" name="cincaution" id="cincaution" required>
+                    <input type="text" name="cincaution" required>
                 </div>
                 
                 <div class="form-group">
                     <label for="contactcaution">CONTACT</label>
-                    <input type="text" name="contactcaution" id="contactcaution" required>
+                    <input type="text" name="contactcaution" required>
                 </div>
             </fieldset>
             
-            <!-- Section 5: Décision -->
+            <!-- Section 5: Décision et statut -->
             <fieldset>
-                <legend>Décision</legend>
+                <legend>Décision et statut</legend>
                 
                 <div class="form-group">
                     <label>DÉCISION</label>
                     <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="radio" name="decisiondemcredcas" value="En attente" id="attente" checked>
+                            <label for="attente">En attente</label>
+                        </div>
                         <div class="checkbox-item">
                             <input type="radio" name="decisiondemcredcas" value="Approuvé" id="approuve">
                             <label for="approuve">Approuvé</label>
@@ -347,17 +352,22 @@
                             <input type="radio" name="decisiondemcredcas" value="Rejet" id="rejet">
                             <label for="rejet">Rejet</label>
                         </div>
-                        <div class="checkbox-item">
-                            <input type="radio" name="decisiondemcredcas" value="Autres" id="autre">
-                            <label for="autre">Autres</label>
-                        </div>
                     </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="statut">STATUT</label>
+                    <select name="statut">
+                        <option value="Nouvelle" selected>Nouvelle</option>
+                        <option value="En traitement">En traitement</option>
+                        <option value="Terminée">Terminée</option>
+                    </select>
                 </div>
             </fieldset>
             
             <div class="form-actions">
-                <button type="submit" class="btn btn-primary">Envoyer</button>
-                <a href="/liste" class="btn btn-danger">Annuler</a>
+                <button type="reset" class="btn btn-secondary">Réinitialiser</button>
+                <button type="submit" class="btn btn-primary">Enregistrer</button>
             </div>
         </form>
     </div>

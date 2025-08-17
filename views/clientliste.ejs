@@ -132,9 +132,25 @@
                     <th>Matricule</th>
                     <th>Prénom(s)</th>
                     <th>Type</th>
+                    <th>Source</th>
+                    <th>Porteur</th>
                     <th>Nom client</th>
                     <th>Prénom client</th>
+                    <th>CIN client</th>
+                    <th>Date de naissance</th>
+                    <th>Sexe</th>
+                    <th>Situation matrimoniale</th>
+                    <th>Adresse</th>
+                    <th>Contact</th>
+                    <th>Activité</th>
+                    <th>Maturité activité (années)</th>
                     <th>Montant (Ar)</th>
+                    <th>Durée (mois)</th>
+                    <th>Capacité remboursement (Ar)</th>
+                    <th>Nom caution</th>
+                    <th>Prénom caution</th>
+                    <th>CIN caution</th>
+                    <th>Contact caution</th>
                     <th>Décision</th>
                     <th>Actions</th>
                 </tr>
@@ -147,9 +163,25 @@
                     <td><%= demande.matriculeportcas %></td>
                     <td><%= demande.prenomportcas %></td>
                     <td><%= demande.typecas %></td>
+                    <td><%= demande.sourcecas %></td>
+                    <td><%= demande.porteurcas %></td>
                     <td><%= demande.nomcli %></td>
                     <td><%= demande.prenomcli %></td>
+                    <td><%= demande.cincli || '-' %></td>
+                    <td><%= demande.datenaisscli ? new Date(demande.datenaisscli).toLocaleDateString('fr-FR') : '-' %></td>
+                    <td><%= demande.sexecli || '-' %></td>
+                    <td><%= demande.matrimonialecli || '-' %></td>
+                    <td><%= demande.adressecli %></td>
+                    <td><%= demande.contactcli %></td>
+                    <td><%= demande.activitecli %></td>
+                    <td><%= demande.maturiteactivitecli %></td>
                     <td><%= new Intl.NumberFormat('fr-FR').format(demande.montantdemcredcli) %></td>
+                    <td><%= demande.moiscli %></td>
+                    <td><%= new Intl.NumberFormat('fr-FR').format(demande.capacitecli) %></td>
+                    <td><%= demande.nomcaution %></td>
+                    <td><%= demande.prenomcaution %></td>
+                    <td><%= demande.cincaution %></td>
+                    <td><%= demande.contactcaution %></td>
                     <td><%= demande.decisiondemcredcas %></td>
                     <td class="action-links">
                         <a href="/modifier/<%= demande.id %>">Modifier</a>
