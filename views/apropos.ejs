@@ -6,30 +6,31 @@
     <title><%= title %></title>
     <style>
         :root {
-            --primary-color: #3498db;
-            --secondary-color: #2980b9;
-            --background-color: #f8f9fa;
-            --text-color: #333;
-            --card-bg: white;
-            --card-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            --border-color: #ddd; /* Ajouté pour cohérence */
+            --primary-color: #4a90e2;
+            --secondary-color: #357abd;
+            --background-color: #f5f7fa;
+            --text-color: #2d3748;
+            --card-bg: #ffffff;
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --border-color: #e2e8f0;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
             background-color: var(--background-color);
             color: var(--text-color);
             line-height: 1.6;
+            padding-top: 20px;
         }
 
         .container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
             padding: 40px 20px;
         }
@@ -38,17 +39,25 @@
             text-align: center;
             margin-bottom: 30px;
             color: var(--primary-color);
+            font-size: 2.2rem;
+            font-weight: 700;
         }
 
         .about-card {
             background: var(--card-bg);
-            padding: 30px;
-            border-radius: 8px;
+            padding: 40px;
+            border-radius: 12px;
             box-shadow: var(--card-shadow);
+            transition: transform 0.3s ease;
+        }
+
+        .about-card:hover {
+            transform: translateY(-5px);
         }
 
         .about-card p {
             margin-bottom: 20px;
+            font-size: 1.1rem;
         }
 
         .team-members {
@@ -58,53 +67,56 @@
         .team-members h2 {
             color: var(--primary-color);
             margin-bottom: 15px;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 2px solid var(--border-color);
             padding-bottom: 10px;
+            font-size: 1.5rem;
         }
 
         .member {
             display: flex;
             align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .member img {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-right: 15px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8fafc;
+            border-radius: 8px;
         }
 
         .member-info h3 {
             color: var(--primary-color);
             margin-bottom: 5px;
+            font-size: 1.2rem;
         }
 
         .member-info p {
-            color: #666;
+            color: #4a5568;
             margin-bottom: 0;
+            font-size: 1rem;
         }
 
         @media (max-width: 768px) {
             .container {
                 padding: 20px 15px;
             }
-            
+
             .about-card {
                 padding: 20px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
             }
         }
     </style>
 </head>
 <body>
+    <!-- Inclusion de la barre de navigation -->
     <%- include('partials/navigation') %>
     
     <div class="container">
         <h1>À propos de l'application</h1>
         
         <div class="about-card">
-            <p>Cette application est un système de gestion des demandes de crédit développé pour faciliter le suivi et la gestion des demandes de prêt.</p>
+            <p>Cette application est un système de gestion des demandes de crédit conçu pour simplifier le suivi et la gestion des demandes de prêt.</p>
             
             <p>Fonctionnalités principales :</p>
             <ul style="margin-left: 20px; margin-bottom: 20px;">
@@ -115,8 +127,7 @@
                 <li>Suivi des décisions</li>
             </ul>
             
-           
-            <p>Dernière mise à jour: <%= new Date().toLocaleDateString() %></p>
+            <p>Dernière mise à jour : <%= new Date().toLocaleDateString('fr-FR') %></p>
             
             <div class="team-members">
                 <h2>Équipe de développement</h2>

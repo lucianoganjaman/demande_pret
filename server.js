@@ -1,54 +1,93 @@
+// Importation des modules nécessaires
 const express = require('express');
 const path = require('path');
 const db = require('./connexion');
+
+// Initialisation de l'application Express
 const app = express();
 
-// Middleware
+// Middleware pour parser les données des formulaires et JSON
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Configuration EJS
+// Configuration du moteur de rendu EJS
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-// Logger
+// Middleware de journalisation des requêtes
 app.use((req, res, next) => {
   console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
   next();
 });
 
-// Routes
+// Route pour la page d'accueil (formulaire de nouvelle demande)
 app.get('/', (req, res) => {
-  res.render('clientform', {
-    title: 'Nouvelle demande',
-    success: req.query.success
+  res.render('clientform', { title: 'Nouvelle demande', success: false, error: null });
+
+});
+
+// Route pour afficher la liste des détails des demandes
+app.get('/details', (req, res) => {
+  db.query('SELECT * FROM demandes_credit ORDER BY datedemcredcas DESC', (err, results) => {
+    if (err) {
+      console.error('Erreur DB:', err);
+      return res.status(500).render('error', {
+        title: 'Erreur',
+        message: 'Impossible de charger les demandes'
+      });
+    }
+    res.render('clientliste', { // Changement de 'detais' à 'clientliste' pour cohérence
+      title: 'Liste des détails',
+      demandes: results
+    });
   });
 });
 
+// Route pour la page "À propos"
 app.get('/apropos', (req, res) => {
   res.render('apropos', { title: 'À propos' });
 });
 
-// Soumission du formulaire
-app.post('/submit-credit', (req, res) => {
+// Route pour la soumission du formulaire
+app.post('/submit', (req, res) => {
   const requiredFields = [
-    'nomcli', 'prenomcli', 'montantdemcredcli', 'matriculeportcas', 
-    'prenomportcas', 'adressecli', 'contactcli', 'activitecli', 
-    'maturiteactivitecli', 'nomcaution', 'prenomcaution', 
+    'nomcli', 'prenomcli', 'montantdemcredcli', 'matriculeportcas',
+    'prenomportcas', 'adressecli', 'contactcli', 'activitecli',
+    'maturiteactivitecli', 'nomcaution', 'prenomcaution',
     'cincaution', 'contactcaution', 'sexecli', 'matrimonialecli'
   ];
 
+  // Vérification des champs obligatoires
   const missingFields = requiredFields.filter(field => !req.body[field]);
   if (missingFields.length > 0) {
-    return res.status(400).render('error', {
-      title: 'Erreur',
-      message: `Champs obligatoires manquants : ${missingFields.join(', ')}`
+    return res.status(400).render('clientform', {
+      title: 'Nouvelle demande',
+      success: false,
+      error: `Champs obligatoires manquants : ${missingFields.join(', ')}`
     });
   }
 
+  // Validation des champs numériques
+  if (isNaN(req.body.montantdemcredcli) || req.body.montantdemcredcli <= 0) {
+    return res.status(400).render('clientform', {
+      title: 'Nouvelle demande',
+      success: false,
+      error: 'Le montant du crédit doit être un nombre positif'
+    });
+  }
+
+  if (isNaN(req.body.capacitecli) || req.body.capacitecli <= 0) {
+    return res.status(400).render('clientform', {
+      title: 'Nouvelle demande',
+      success: false,
+      error: 'La capacité de remboursement doit être un nombre positif'
+    });
+  }
+
+  // Préparation des données du formulaire
   const formData = {
-    datedemcredcas: req.body.datedemcred || new Date(),
+    datedemcredcas: req.body.datedemcredcas || new Date(),
     matriculeportcas: req.body.matriculeportcas,
     prenomportcas: req.body.prenomportcas,
     typecas: req.body.typecas || 'Nouveau cas',
@@ -64,30 +103,34 @@ app.post('/submit-credit', (req, res) => {
     contactcli: req.body.contactcli,
     activitecli: req.body.activitecli,
     maturiteactivitecli: req.body.maturiteactivitecli,
-    montantdemcredcli: req.body.montantdemcredcli,
+    montantdemcredcli: parseFloat(req.body.montantdemcredcli),
     moiscli: req.body.moiscli,
-    capacitecli: req.body.capacitecli,
+    capacitecli: parseFloat(req.body.capacitecli),
     nomcaution: req.body.nomcaution,
     prenomcaution: req.body.prenomcaution,
     cincaution: req.body.cincaution,
     contactcaution: req.body.contactcaution,
     decisiondemcredcas: req.body.decisiondemcredcas || 'En attente',
-    statut: 'Nouvelle'
+    statut: 'Nouvelle',
+    date_creation: new Date(), // Ajout pour satisfaire la contrainte NOT NULL
+    date_modification: new Date() // Ajout pour satisfaire la contrainte NOT NULL
   };
 
+  // Insertion dans la base de données
   db.query('INSERT INTO demandes_credit SET ?', formData, (err, result) => {
     if (err) {
       console.error('Erreur DB:', err);
-      return res.status(500).render('error', {
-        title: 'Erreur serveur',
-        message: 'Échec de l\'enregistrement'
+      return res.status(500).render('clientform', {
+        title: 'Nouvelle demande',
+        success: false,
+        error: 'Échec de l\'enregistrement dans la base de données'
       });
     }
     res.redirect('/?success=true');
   });
 });
 
-// Liste des demandes
+// Route pour afficher la liste des demandes
 app.get('/liste', (req, res) => {
   db.query('SELECT * FROM demandes_credit ORDER BY datedemcredcas DESC', (err, results) => {
     if (err) {
@@ -104,7 +147,7 @@ app.get('/liste', (req, res) => {
   });
 });
 
-// Détails d'une demande
+// Route pour afficher les détails d'une demande spécifique
 app.get('/details/:id', (req, res) => {
   const id = req.params.id;
   db.query('SELECT * FROM demandes_credit WHERE id = ?', [id], (err, results) => {
@@ -121,7 +164,7 @@ app.get('/details/:id', (req, res) => {
   });
 });
 
-// Modification
+// Route pour afficher le formulaire de modification
 app.get('/modifier/:id', (req, res) => {
   const id = req.params.id;
   db.query('SELECT * FROM demandes_credit WHERE id = ?', [id], (err, results) => {
@@ -138,6 +181,7 @@ app.get('/modifier/:id', (req, res) => {
   });
 });
 
+// Route pour mettre à jour une demande
 app.post('/modifier/:id', (req, res) => {
   const id = req.params.id;
   const updateData = {
@@ -157,17 +201,19 @@ app.post('/modifier/:id', (req, res) => {
     contactcli: req.body.contactcli,
     activitecli: req.body.activitecli,
     maturiteactivitecli: req.body.maturiteactivitecli,
-    montantdemcredcli: req.body.montantdemcredcli,
+    montantdemcredcli: parseFloat(req.body.montantdemcredcli),
     moiscli: req.body.moiscli,
-    capacitecli: req.body.capacitecli,
+    capacitecli: parseFloat(req.body.capacitecli),
     nomcaution: req.body.nomcaution,
     prenomcaution: req.body.prenomcaution,
     cincaution: req.body.cincaution,
     contactcaution: req.body.contactcaution,
     decisiondemcredcas: req.body.decisiondemcredcas || 'En attente',
-    statut: 'Modifié'
+    statut: 'Modifié',
+    date_modification: new Date() // Mise à jour de la date de modification
   };
 
+  // Mise à jour dans la base de données
   db.query('UPDATE demandes_credit SET ? WHERE id = ?', [updateData, id], (err, result) => {
     if (err) {
       console.error('Erreur DB:', err);
@@ -180,7 +226,7 @@ app.post('/modifier/:id', (req, res) => {
   });
 });
 
-// Suppression
+// Route pour supprimer une demande
 app.get('/supprimer/:id', (req, res) => {
   const id = req.params.id;
   db.query('DELETE FROM demandes_credit WHERE id = ?', [id], (err, result) => {
@@ -195,7 +241,7 @@ app.get('/supprimer/:id', (req, res) => {
   });
 });
 
-// Gestion des erreurs
+// Gestion des erreurs 404
 app.use((req, res) => {
   res.status(404).render('error', {
     title: '404 - Page introuvable',
@@ -203,6 +249,7 @@ app.use((req, res) => {
   });
 });
 
+// Gestion des erreurs serveur
 app.use((err, req, res, next) => {
   console.error('Erreur serveur:', err);
   res.status(500).render('error', {

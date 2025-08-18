@@ -1,9 +1,10 @@
+<!-- Barre de navigation -->
 <nav class="navbar">
     <div class="container">
         <h1>Système de Gestion de Crédits</h1>
         <ul class="nav-links">
             <li><a href="/" class="<%= title === 'Nouvelle demande' ? 'active' : '' %>">Nouvelle demande</a></li>
-             <li><a href="/details" class="<%= title === 'Detail du credit' ? 'active' : '' %>">Detail</a></li>
+            <li><a href="/details" class="<%= title === 'Liste des détails' ? 'active' : '' %>">Liste des détails</a></li>
             <li><a href="/liste" class="<%= title === 'Liste des demandes' ? 'active' : '' %>">Liste des demandes</a></li>
             <li><a href="/apropos" class="<%= title === 'À propos' ? 'active' : '' %>">À propos</a></li>
         </ul>
@@ -12,17 +13,20 @@
 
 <style>
     :root {
-        --navbar-bg: #2c3e50;
-        --navbar-text: white;
-        --navbar-hover: #3498db;
-        --navbar-active: #2980b9;
+        --navbar-bg: #1a3c5e; /* Couleur de fond plus moderne */
+        --navbar-text: #ffffff;
+        --navbar-hover: #4a90e2; /* Couleur plus vive pour le survol */
+        --navbar-active: #357abd;
     }
 
     .navbar {
         background: var(--navbar-bg);
         color: var(--navbar-text);
-        padding: 1rem 0;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        padding: 1.2rem 0;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
     }
 
     .navbar .container {
@@ -35,39 +39,45 @@
     }
 
     .navbar h1 {
-        font-size: 1.5rem;
+        font-size: 1.8rem;
         margin: 0;
+        font-weight: 600;
     }
 
     .nav-links {
         display: flex;
         list-style: none;
+        margin: 0;
+        padding: 0;
     }
 
     .nav-links li {
-        margin-left: 1.5rem;
+        margin-left: 2rem;
     }
 
     .nav-links a {
         color: var(--navbar-text);
         text-decoration: none;
         font-weight: 500;
-        padding: 0.5rem 1rem;
-        border-radius: 4px;
-        transition: background-color 0.3s ease;
+        padding: 0.6rem 1.2rem;
+        border-radius: 6px;
+        transition: all 0.3s ease;
     }
 
     .nav-links a:hover {
         background-color: var(--navbar-hover);
+        transform: translateY(-2px);
     }
 
     .nav-links a.active {
         background-color: var(--navbar-active);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     }
 
     @media (max-width: 768px) {
         .navbar .container {
             flex-direction: column;
+            gap: 1rem;
         }
 
         .navbar h1 {
@@ -77,10 +87,11 @@
         .nav-links {
             width: 100%;
             justify-content: space-around;
+            flex-wrap: wrap;
         }
 
         .nav-links li {
-            margin: 0;
+            margin: 0.5rem;
         }
     }
 </style>

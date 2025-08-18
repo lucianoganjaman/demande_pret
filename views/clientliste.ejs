@@ -6,29 +6,30 @@
     <title><%= title %></title>
     <style>
         :root {
-            --primary-color: #3498db;
-            --secondary-color: #2980b9;
-            --background-color: #f8f9fa;
-            --text-color: #333;
-            --border-color: #ddd;
-            --table-header-bg: #f1f1f1;
-            --table-row-even: #f9f9f9;
-            --table-row-hover: #f1f1f1;
-            --link-color: #3498db;
-            --link-hover-color: #2980b9;
+            --primary-color: #4a90e2;
+            --secondary-color: #357abd;
+            --background-color: #f5f7fa;
+            --text-color: #2d3748;
+            --border-color: #e2e8f0;
+            --table-header-bg: #edf2f7;
+            --table-row-even: #f7fafc;
+            --table-row-hover: #e2e8f0;
+            --link-color: #4a90e2;
+            --link-hover-color: #357abd;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
             background-color: var(--background-color);
             color: var(--text-color);
             line-height: 1.6;
+            padding-top: 20px;
         }
 
         .container {
@@ -42,20 +43,22 @@
             text-align: center;
             margin-bottom: 30px;
             color: var(--primary-color);
+            font-size: 2.2rem;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            background: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            background: #ffffff;
         }
 
         th, td {
             border: 1px solid var(--border-color);
             padding: 12px 15px;
             text-align: left;
+            font-size: 0.95rem;
         }
 
         th {
@@ -63,6 +66,7 @@
             font-weight: 600;
             position: sticky;
             top: 0;
+            z-index: 10;
         }
 
         tr:nth-child(even) {
@@ -82,27 +86,28 @@
             color: var(--link-color);
             text-decoration: none;
             font-weight: 500;
-            padding: 5px 10px;
-            border-radius: 4px;
+            padding: 6px 12px;
+            border-radius: 6px;
             transition: all 0.3s ease;
         }
 
         .action-links a:hover {
-            color: var(--link-hover-color);
-            text-decoration: underline;
+            color: #ffffff;
+            background-color: var(--link-hover-color);
+            transform: translateY(-2px);
         }
 
-        .action-links a:first-child {
-            background-color: #f0f0f0;
+        .action-links a.edit {
+            background-color: #edf2f7;
         }
 
-        .action-links a:last-child {
-            background-color: #ffebee;
-            color: #e53935;
+        .action-links a.delete {
+            background-color: #fefcbf;
+            color: #d69e2e;
         }
 
-        .action-links a:last-child:hover {
-            background-color: #ffcdd2;
+        .action-links a.delete:hover {
+            background-color: #ecc94b;
         }
 
         @media (max-width: 768px) {
@@ -111,19 +116,22 @@
                 overflow-x: auto;
                 white-space: nowrap;
             }
-            
+
             th, td {
                 padding: 8px 10px;
+                font-size: 0.9rem;
             }
         }
     </style>
 </head>
 <body>
+    <!-- Inclusion de la barre de navigation -->
     <%- include('partials/navigation') %>
     
     <div class="container">
-        <h1>Liste des demandes de crédit</h1>
+        <h1><%= title %></h1>
         
+        <!-- Tableau des demandes -->
         <table>
             <thead>
                 <tr>
@@ -184,8 +192,8 @@
                     <td><%= demande.contactcaution %></td>
                     <td><%= demande.decisiondemcredcas %></td>
                     <td class="action-links">
-                        <a href="/modifier/<%= demande.id %>">Modifier</a>
-                        <a href="/supprimer/<%= demande.id %>" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette demande ?')">Supprimer</a>
+                        <a href="/modifier/<%= demande.id %>" class="edit">Modifier</a>
+                        <a href="/supprimer/<%= demande.id %>" class="delete" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette demande ?')">Supprimer</a>
                     </td>
                 </tr>
                 <% }); %>

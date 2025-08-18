@@ -1,141 +1,187 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title><%= title %></title>
     <style>
+        /* Variables de couleurs */
         :root {
-            --primary-color: #3498db;
-            --secondary-color: #2980b9;
-            --background-color: #f8f9fa;
-            --text-color: #333;
-            --card-bg: white;
-            --card-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            --border-color: #ddd;
+            --primary-color: #4a90e2;
+            --secondary-color: #357ABD;
+            --background-color: #f0f4f8;
+            --text-color: #2c3e50;
+            --card-bg: #ffffff;
+            --card-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+            --border-radius: 12px;
+            --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --accent-color: #27ae60;
         }
 
+        /* Reset & Base */
         * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0; padding: 0; box-sizing: border-box;
+            font-family: var(--font-family);
         }
 
         body {
             background-color: var(--background-color);
             color: var(--text-color);
             line-height: 1.6;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             padding: 40px 20px;
         }
 
         h1 {
-            text-align: center;
+            color: var(--primary-color);
             margin-bottom: 30px;
-            color: var(--primary-color);
+            font-weight: 700;
+            font-size: 2.4rem;
+            text-align: center;
         }
 
-        .detail-card {
+        .card {
             background: var(--card-bg);
-            padding: 30px;
-            border-radius: 8px;
             box-shadow: var(--card-shadow);
+            border-radius: var(--border-radius);
+            padding: 30px 40px;
+            max-width: 720px;
+            width: 100%;
+            animation: fadeIn 0.5s ease forwards;
         }
 
-        .detail-card h2 {
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        section {
+            margin-bottom: 30px;
+        }
+
+        section h2 {
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 8px;
+            margin-bottom: 20px;
             color: var(--primary-color);
-            margin-bottom: 15px;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 10px;
+            font-weight: 600;
+            font-size: 1.5rem;
         }
 
-        .detail-card p {
-            margin-bottom: 10px;
+        p {
+            font-size: 1.1rem;
+            margin-bottom: 14px;
+            color: var(--text-color);
         }
 
-        .btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 500;
-            text-decoration: none;
-            display: inline-block;
-            margin-top: 20px;
+        strong {
+            color: var(--secondary-color);
         }
 
         .btn-primary {
+            display: inline-block;
             background-color: var(--primary-color);
             color: white;
+            padding: 12px 28px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+            margin-top: 10px;
         }
 
         .btn-primary:hover {
             background-color: var(--secondary-color);
         }
 
-        @media (max-width: 768px) {
-            .container {
-                padding: 20px 15px;
+        @media (max-width: 600px) {
+            body {
+                padding: 20px 10px;
             }
-            
-            .detail-card {
-                padding: 20px;
+            .card {
+                padding: 20px 25px;
+            }
+            h1 {
+                font-size: 1.8rem;
+            }
+            section h2 {
+                font-size: 1.3rem;
+            }
+            p {
+                font-size: 1rem;
+            }
+            .btn-primary {
+                padding: 10px 20px;
+                font-size: 1rem;
             }
         }
     </style>
 </head>
 <body>
     <%- include('partials/navigation') %>
-    
-    <div class="container">
-        <h1>Détails de la demande</h1>
-        
-        <div class="detail-card">
-            <h2>Information sur le porteur et le cas</h2>
-            <p><strong>Date :</strong> <%= demande && demande.datedemcredcas ? new Date(demande.datedemcredcas).toLocaleDateString('fr-FR') : '' %></p>
-            <p><strong>Matricule :</strong> <%= demande ? demande.matriculeportcas : '' %></p>
-            <p><strong>Prénom(s) :</strong> <%= demande ? demande.prenomportcas : '' %></p>
-            <p><strong>Type :</strong> <%= demande ? demande.typecas : '' %></p>
-            <p><strong>Source CAS :</strong> <%= demande ? demande.sourcecas : '' %></p>
-            <p><strong>Porteur CAS :</strong> <%= demande ? demande.porteurcas : '' %></p>
-            
+    <!--pour montrer ce le details sous forme phrase on dois ajouter l'id  à detailler ex http://localhost:3007/details/1  si non ce serait sous forme de tableau-->
+
+
+    <h1>Détails de la demande</h1>
+
+    <div class="card">
+
+        <section>
+            <h2>Informations sur le porteur et le cas</h2>
+            <p>
+                La demande a été créée le <strong><%= demande && demande.datedemcredcas ? new Date(demande.datedemcredcas).toLocaleDateString('fr-FR') : 'N/A' %></strong>.
+                Le porteur de dossier est <strong><%= demande ? demande.prenomportcas : 'N/A' %></strong> (matricule <strong><%= demande ? demande.matriculeportcas : 'N/A' %></strong>).
+                Il s'agit d'un cas de type <strong><%= demande ? demande.typecas : 'N/A' %></strong> provenant de la source <strong><%= demande ? demande.sourcecas : 'N/A' %></strong>,
+                avec comme porteur de cas <strong><%= demande ? demande.porteurcas : 'N/A' %></strong>.
+            </p>
+        </section>
+
+        <section>
             <h2>Informations Client</h2>
-            <p><strong>Nom :</strong> <%= demande ? demande.nomcli : '' %></p>
-            <p><strong>Prénom :</strong> <%= demande ? demande.prenomcli : '' %></p>
-            <p><strong>CIN :</strong> <%= demande ? demande.cincli : '' %></p>
-            <p><strong>Date de naissance :</strong> <%= demande && demande.datenaisscli ? new Date(demande.datenaisscli).toLocaleDateString('fr-FR') : '' %></p>
-            <p><strong>Sexe :</strong> <%= demande ? demande.sexecli : '' %></p>
-            <p><strong>Situation matrimoniale :</strong> <%= demande ? demande.matrimonialecli : '' %></p>
-            <p><strong>Adresse :</strong> <%= demande ? demande.adressecli : '' %></p>
-            <p><strong>Contact :</strong> <%= demande ? demande.contactcli : '' %></p>
-            <p><strong>Activité :</strong> <%= demande ? demande.activitecli : '' %></p>
-            <p><strong>Maturité activité (années) :</strong> <%= demande ? demande.maturiteactivitecli : '' %></p>
-            
+            <p>
+                Le/la client(e) s'appelle <strong><%= demande ? demande.prenomcli : 'N/A' %> <%= demande ? demande.nomcli : '' %></strong>, 
+                né(e) le <strong><%= demande && demande.datenaisscli ? new Date(demande.datenaisscli).toLocaleDateString('fr-FR') : 'N/A' %></strong>, 
+                de sexe <strong><%= demande ? demande.sexecli.toLowerCase() : 'N/A' %></strong> et est actuellement <strong><%= demande ? demande.matrimonialecli.toLowerCase() : 'N/A' %></strong>.
+                Il/elle habite à <strong><%= demande ? demande.adressecli : 'N/A' %></strong> et peut être contacté(e) au <strong><%= demande ? demande.contactcli : 'N/A' %></strong>.
+            </p>
+            <p>
+                Son activité principale est <strong><%= demande ? demande.activitecli.toLowerCase() : 'N/A' %></strong>, 
+                exercée depuis <strong><%= demande ? demande.maturiteactivitecli : 'N/A' %></strong> an(s).
+            </p>
+        </section>
+
+        <section>
             <h2>Informations Crédit</h2>
-            <p><strong>Montant (Ar) :</strong> <%= demande ? new Intl.NumberFormat('fr-FR').format(demande.montantdemcredcli) : '' %></p>
-            <p><strong>Durée (mois) :</strong> <%= demande ? demande.moiscli : '' %></p>
-            <p><strong>Capacité (Ar) :</strong> <%= demande ? new Intl.NumberFormat('fr-FR').format(demande.capacitecli) : '' %></p>
-            
+            <p>
+                Le montant du crédit demandé est de <strong><%= demande ? new Intl.NumberFormat('fr-FR').format(demande.montantdemcredcli) : 'N/A' %> Ar</strong>, 
+                à rembourser sur <strong><%= demande ? demande.moiscli : 'N/A' %></strong> mois. 
+                La capacité de remboursement mensuelle estimée est de <strong><%= demande ? new Intl.NumberFormat('fr-FR').format(demande.capacitecli) : 'N/A' %> Ar</strong>.
+            </p>
+        </section>
+
+        <section>
             <h2>Informations Caution</h2>
-            <p><strong>Nom :</strong> <%= demande ? demande.nomcaution : '' %></p>
-            <p><strong>Prénom :</strong> <%= demande ? demande.prenomcaution : '' %></p>
-            <p><strong>CIN :</strong> <%= demande ? demande.cincaution : '' %></p>
-            <p><strong>Contact :</strong> <%= demande ? demande.contactcaution : '' %></p>
-            
-            <h2>Décision</h2>
-            <p><strong>Décision :</strong> <%= demande ? demande.decisiondemcredcas : '' %></p>
-            <p><strong>Statut :</strong> <%= demande ? demande.statut : '' %></p>
-            <p><strong>Date de création :</strong> <%= demande && demande.date_creation ? new Date(demande.date_creation).toLocaleDateString('fr-FR') : '' %></p>
-            <p><strong>Date de modification :</strong> <%= demande && demande.date_modification ? new Date(demande.date_modification).toLocaleDateString('fr-FR') : '' %></p>
-            
-            <a href="/modifier/<%= demande ? demande.id : '' %>" class="btn btn-primary">Modifier</a>
-        </div>
+            <p>
+                La caution est <strong><%= demande ? demande.prenomcaution : 'N/A' %> <%= demande ? demande.nomcaution : '' %></strong>, 
+                titulaire du CIN <strong><%= demande ? demande.cincaution : 'N/A' %></strong>, 
+                joignable au <strong><%= demande ? demande.contactcaution : 'N/A' %></strong>.
+            </p>
+        </section>
+
+        <section>
+            <h2>Décision & Statut</h2>
+            <p>
+                La décision actuelle est : <strong><%= demande ? demande.decisiondemcredcas : 'N/A' %></strong>.<br />
+                Le statut du dossier est : <strong><%= demande ? demande.statut : 'N/A' %></strong>.<br />
+                Ce dossier a été créé le <strong><%= demande && demande.date_creation ? new Date(demande.date_creation).toLocaleDateString('fr-FR') : 'N/A' %></strong> 
+                et modifié pour la dernière fois le <strong><%= demande && demande.date_modification ? new Date(demande.date_modification).toLocaleDateString('fr-FR') : 'N/A' %></strong>.
+            </p>
+        </section>
+
+        <a href="/modifier/<%= demande ? demande.id : '' %>" class="btn-primary">Modifier</a>
     </div>
 </body>
 </html>
